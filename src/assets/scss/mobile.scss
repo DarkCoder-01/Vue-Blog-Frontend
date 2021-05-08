@@ -1,0 +1,36 @@
+@media only screen and (max-width: 600px) {
+  html,body {
+    overflow-x: hidden;
+    background-color: #fdfcf8;
+  }
+
+  #cp-header {
+    display: none!important;
+  }
+
+  #mobileNav{
+    display: block!important;
+  }
+
+  .content {
+    display: flex;
+    flex-wrap: wrap !important;
+    overflow: hidden;
+
+    .image {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
+  .content .describe .describe-bottom {
+    position: static !important;
+  }
+
+  .left-side {
+    margin: 0 0 !important;
+  }
+
+  .right-side {
+    margin: 10px 0 !important;
+  }
+}
