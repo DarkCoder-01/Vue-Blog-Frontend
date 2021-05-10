@@ -19,7 +19,7 @@
 
       </div>
       <div>
-        <h2>{{data.title}}</h2>
+        <h2>{{ data.title }}</h2>
         <div class="m-info-content">
           <span v-if="data.created" class="m-date"><i class="iconfont icon-date"></i>{{ data.created }}</span>
           <span><i class="el-icon-view"></i>{{ data.view }}</span>
@@ -79,7 +79,7 @@ export default {
       })
     },
     editBlog(id) {
-      this.$router.push({name:'editBlog',params: {id: id}})
+      this.$router.push({name: 'editBlog', params: {id: id}})
     },
     deleteBlog(id) {
       this.$confirm('此操作将删除该文章, 是否继续?', '提示', {
@@ -94,7 +94,7 @@ export default {
         // 发起删除的网络请求
         this.$axios.get('/blog/delete?blogId=' + id)
             .then(res => {
-              if(res.data.code === 0){
+              if (res.data.code === 0) {
                 //发起删除请求操作
                 this.$message({
                   type: 'success',
@@ -104,7 +104,7 @@ export default {
                   location.reload()
                 }, 500);
               }
-            }).catch(e=>{
+            }).catch(e => {
           console.log(e)
         })
       }).catch(() => {

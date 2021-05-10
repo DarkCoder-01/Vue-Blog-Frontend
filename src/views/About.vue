@@ -26,14 +26,14 @@ export default {
   data() {
     return {
       about: "",
-      imgs: ["http://139.196.175.10/img/72cfaa308c29450d83087275965f0e5a.jpg", "http://139.196.175.10/img/72cfaa308c29450d83087275965f0e5a.jpg", "http://139.196.175.10/img/72cfaa308c29450d83087275965f0e5a.jpg", "http://139.196.175.10/img/72cfaa308c29450d83087275965f0e5a.jpg"],
+      imgs: ["http://139.196.175.10/img/72cfaa308c29450d83087275965f0e5a.jpg"],
     }
   },
   methods: {
     getAbout() {
       this.$axios.get('/about').then(res => {
         this.about = res.data.data.content;
-        console.log(res.data.data);
+        // console.log(res.data.data);
       })
     }
   },

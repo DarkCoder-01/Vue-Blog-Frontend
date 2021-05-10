@@ -30,7 +30,7 @@ export default {
     GetArchives() {
       this.$axios.get('/blog/archive').then(res => {
         this.archive = res.data.data;
-        console.log(this.archive);
+        // console.log(this.archive);
       })
     },
     GotoDetail(blogId) {

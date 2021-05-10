@@ -223,9 +223,9 @@ export default {
       this.$refs.cover.submit();
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.blog);
+          // console.log(this.blog);
           this.blog.tags = this.blog.tags.join(',');
-          console.log(this.blog);
+          // console.log(this.blog);
           const _this = this;
           this.$axios.post('/blog/edit', this.blog).then((res) => {
             if (res.data.code === 200) {
@@ -255,7 +255,9 @@ export default {
 
     //校验文件类型
     beforeCoverUpload(file) {
-      console.log(file.type)
+      if(file.type != ('image/jpeg' || 'image/png')) {
+        this.$message.error('上传封面只能是jpeg或者png格式!');
+      }
       const isLt4M = file.size / 1024 / 1024 < 4;
       if (!isLt4M) {
         this.$message.error('上传封面大小不能超过 4MB!');
