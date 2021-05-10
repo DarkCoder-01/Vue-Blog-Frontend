@@ -4,7 +4,7 @@
             v-loading="loading"
             element-loading-text="玩儿命加载中..."
             element-loading-spinner="el-icon-loading"
-            element-loading-background="rgba(0, 0, 0, 0.8)"
+            element-loading-background="rgba(0, 0, 0, 0.9)"
     >
       <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
         <div class="left-side">
@@ -13,10 +13,8 @@
               共有{{ total }}篇博客
             </div>
             <div slot="header" v-if="isSearch">
-              <el-breadcrumb separator-class="el-icon-arrow-right">
-                <el-breadcrumb-item><el-link @click="reload" style="align-items: center">返回</el-link></el-breadcrumb-item>
-                <el-breadcrumb-item>关于{{ keyWord1 }}的搜索结果，共有{{ total }}篇</el-breadcrumb-item>
-              </el-breadcrumb>
+              <el-button @click="reload" icon="el-icon-arrow-left" type="primary" plain size="small">返回首页</el-button>
+              <span style="margin-left: 10px">关于{{ keyWord1 }}的搜索结果，共有{{ total }}篇</span>
             </div>
             <ul>
               <li :key="index" v-for="(item, index) in blogs" @click="gotoDetail(item.id)" >
@@ -90,7 +88,7 @@
               </div>
               <div v-for="item in classifications" style="margin-bottom: 15px; line-height: 20px">
                 <i class="el-icon-notebook-2" style="margin-right: 5px"></i>
-                <el-link @click="">{{ item.classification }}</el-link>
+                <el-link @click="displayByClassification(item.classification)">{{ item.classification }}</el-link>
                 <el-tag style="float: right; margin-top: -5px">{{ item.count }}</el-tag>
               </div>
             </el-card>
@@ -110,18 +108,18 @@
             </el-card>
           </div>
           <!--标签-->
-          <div class="margin-top-10">
+          <div class="margin-top-10 no-padding">
             <el-card>
               <div slot="header">
                 <i class="el-icon-price-tag" style="margin-right: 5px"></i>标签
               </div>
-              <div>
-          <span v-for="(item, index) in tagsList" :key="index">
-            <el-button class="tags-box" :type="btnType[Math.floor(Math.random()*btnType.length)]" icon="el-icon-price-tag"
-                       size="mini" plain @click="pageByTag(item)">
-              {{ item }}
-            </el-button>
-          </span>
+              <div class="no-padding">
+                <span v-for="(tag, index) in tagsList" :key="index">
+                  <el-button class="tags-box" :type="btnType[Math.floor(Math.random()*btnType.length)]" icon="el-icon-price-tag"
+                             size="mini" plain @click="displayByTag(tag)">
+                    {{ tag }}
+                  </el-button>
+                </span>
               </div>
             </el-card>
           </div>
@@ -168,25 +166,38 @@ export default {
       this.keyWord1 = this.keyWord;
       this.isSearch = true;
       this.currentPage = 1;
-      this.page(this.currentPage);
+      this.page(this.currentPage, "search");
     },
-    page(currentPage) {
+    setVal(res) {
+      const data = res.data.data;
+      this.loading = false;
+      this.blogs = data.records;
+      this.total = data.total;
+      this.currentPage = data.current;
+      this.pageSize = data.size;
+      this.keyWord = '';
+    },
+    page(currentPage, displayBy, classification=null, tag=null) {
       document.documentElement.scrollTop = document.body.scrollTop = 0;
-      this.$axios.get('/blog/search?keyWord='+this.keyWord+'&currentPage='+currentPage).then(res => {
-        const data = res.data.data;
-        this.loading = false;
-        this.blogs = data.records;
-        this.total = data.total;
-        this.currentPage = data.current;
-        this.pageSize = data.size;
-        this.keyWord = '';
-      })
+      if(displayBy === 'search') {
+        this.$axios.get('/blog/search?keyWord='+this.keyWord+'&currentPage='+currentPage).then(res => {
+          this.setVal(res);
+        })
+      } else if(displayBy === 'tag' && tag) {
+        this.$axios.get('/blog/tags/'+tag+'?currentPage='+currentPage).then(res => {
+          this.setVal(res);
+        })
+      } else if(displayBy === 'classification' && classification) {
+        this.$axios.get('/blog/classify/'+classification+'?currentPage='+currentPage).then(res => {
+          this.setVal(res);
+        })
+      }
     },
     gotoDetail(id){
       this.$router.push({name:'detail',params: {id:id}});
     },
     GetAllClassification() {
-      this.$axios.get('/blog/classification').then(res => {
+      this.$axios.get('/blog/classifications').then(res => {
         this.classifications = res.data.data.sort();
         // console.log(this.classifications);
       })
@@ -198,20 +209,30 @@ export default {
       })
     },
     reload() {
+      this.loading = true;
       this.currentPage = 1;
       this.pageSize = 5;
       this.keyWord1 = ''
       this.keyWord = '';
       this.total = 0;
       this.isSearch = false;
+      this.page(this.currentPage, "search");
+    },
+    displayByClassification(classification) {
       this.loading = true;
-      this.page(this.currentPage);
+      this.currentPage = 1;
+      this.page(this.currentPage, "classification", classification, null);
+    },
+    displayByTag(tag) {
+      this.loading = true;
+      this.currentPage = 1;
+      this.page(this.currentPage, "tag", null, tag);
     }
   },
   created() {
     this.GetAllClassification();
     this.GetAllTags();
-    this.page(this.currentPage);
+    this.page(this.currentPage, "search");
   }
 }
 </script>
@@ -305,6 +326,10 @@ li {
 
 .margin-top-10 {
   margin-top: 10px;
+}
+
+.no-padding {
+  padding: 0 !important;
 }
 
 .m-title {
