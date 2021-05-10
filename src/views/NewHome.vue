@@ -1,11 +1,22 @@
 <template>
   <div>
-    <el-row :gutter="10">
+    <el-row :gutter="10"
+            v-loading="loading"
+            element-loading-text="玩儿命加载中..."
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.8)"
+    >
       <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
         <div class="left-side">
           <el-card>
-            <div slot="header">
+            <div slot="header" v-if="!isSearch">
               共有{{ total }}篇博客
+            </div>
+            <div slot="header" v-if="isSearch">
+              <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item><el-link @click="reload" style="align-items: center">返回</el-link></el-breadcrumb-item>
+                <el-breadcrumb-item>关于{{ keyWord1 }}的搜索结果，共有{{ total }}篇</el-breadcrumb-item>
+              </el-breadcrumb>
             </div>
             <ul>
               <li :key="index" v-for="(item, index) in blogs" @click="gotoDetail(item.id)" >
@@ -67,8 +78,8 @@
           <!--搜索框-->
           <div class="margin-top-10">
             <el-card>
-              <el-input prefix-icon="el-icon-search" placeholder="输入关键字进行搜索" v-model="keyWord"
-                        @keyup.enter.native="sendKeyWord"></el-input>
+              <el-input prefix-icon="el-icon-search" placeholder="输入关键字回车进行搜索" v-model="keyWord"
+                        @keyup.enter.native="search"></el-input>
             </el-card>
           </div>
           <!--栏目分类-->
@@ -132,11 +143,7 @@
 </template>
 
 <script>
-import SideBar from "@/components/SideBar";
 export default {
-  components: {
-    SideBar,
-  },
   data() {
     return {
       tagType: ['', 'success', 'info', 'warning', 'danger'],
@@ -150,13 +157,24 @@ export default {
       wechat: require('@/assets/img/wechat.jpg'),
       recommend: [],
       keyWord: '',
+      isSearch: false,
+      keyWord1: '',
+      loading: true,
     }
   },
   methods: {
+    search() {
+      this.loading = true;
+      this.keyWord1 = this.keyWord;
+      this.isSearch = true;
+      this.currentPage = 1;
+      this.page(this.currentPage);
+    },
     page(currentPage) {
       document.documentElement.scrollTop = document.body.scrollTop = 0;
       this.$axios.get('/blog/search?keyWord='+this.keyWord+'&currentPage='+currentPage).then(res => {
         const data = res.data.data;
+        this.loading = false;
         this.blogs = data.records;
         this.total = data.total;
         this.currentPage = data.current;
@@ -179,6 +197,16 @@ export default {
         this.tagsList = data['allTags'];
       })
     },
+    reload() {
+      this.currentPage = 1;
+      this.pageSize = 5;
+      this.keyWord1 = ''
+      this.keyWord = '';
+      this.total = 0;
+      this.isSearch = false;
+      this.loading = true;
+      this.page(this.currentPage);
+    }
   },
   created() {
     this.GetAllClassification();
