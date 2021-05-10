@@ -223,16 +223,14 @@ export default {
       this.$refs.cover.submit();
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // console.log(this.blog);
           this.blog.tags = this.blog.tags.join(',');
           // console.log(this.blog);
-          const _this = this;
           this.$axios.post('/blog/edit', this.blog).then((res) => {
             if (res.data.code === 200) {
-              _this.$alert('发表成功', '提示', {
+              this.$alert('发表成功', '提示', {
                 confirmButtonText: '确定',
                 callback: action => {
-                  _this.$router.push('/home');
+                  this.$router.push('/home');
                 }
               });
             }
@@ -255,9 +253,9 @@ export default {
 
     //校验文件类型
     beforeCoverUpload(file) {
-      if(file.type != ('image/jpeg' || 'image/png')) {
-        this.$message.error('上传封面只能是jpeg或者png格式!');
-      }
+      // if(file.type != ('image/jpeg' || 'image/png')) {
+      //   this.$message.error('上传封面只能是jpeg或者png格式!');
+      // }
       const isLt4M = file.size / 1024 / 1024 < 4;
       if (!isLt4M) {
         this.$message.error('上传封面大小不能超过 4MB!');
@@ -274,7 +272,8 @@ export default {
       })
     },
 
-    imgDel(pos, file) {
+    imgDel(file) {
+      console.log(file.type);
       console.log("触发删除动作");
     },
 

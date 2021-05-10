@@ -3,9 +3,7 @@
     <el-row :gutter="10"
             v-loading="loading"
             element-loading-text="玩儿命加载中..."
-            element-loading-spinner="el-icon-loading"
-            element-loading-background="rgba(0, 0, 0, 0.9)"
-    >
+            element-loading-spinner="el-icon-loading">
       <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
         <div class="left-side">
           <el-card>
@@ -144,7 +142,6 @@
 export default {
   data() {
     return {
-      tagType: ['', 'success', 'info', 'warning', 'danger'],
       blogs: {},
       currentPage: 1,
       pageSize: 5,
@@ -152,6 +149,7 @@ export default {
       classifications: [],
       tagsList: [],
       btnType: ['primary', 'success', 'warning', 'danger', 'info',],
+      tagType: ['', 'success', 'info', 'warning', 'danger'],
       wechat: require('@/assets/img/wechat.jpg'),
       recommend: [],
       keyWord: '',
@@ -179,16 +177,16 @@ export default {
     },
     page(currentPage, displayBy, classification=null, tag=null) {
       document.documentElement.scrollTop = document.body.scrollTop = 0;
-      if(displayBy === 'search') {
-        this.$axios.get('/blog/search?keyWord='+this.keyWord+'&currentPage='+currentPage).then(res => {
-          this.setVal(res);
-        })
-      } else if(displayBy === 'tag' && tag) {
+      if(displayBy === 'tag' && tag) {
         this.$axios.get('/blog/tags/'+tag+'?currentPage='+currentPage).then(res => {
           this.setVal(res);
         })
       } else if(displayBy === 'classification' && classification) {
         this.$axios.get('/blog/classify/'+classification+'?currentPage='+currentPage).then(res => {
+          this.setVal(res);
+        })
+      } else {
+        this.$axios.get('/blog/search?keyWord='+this.keyWord+'&currentPage='+currentPage).then(res => {
           this.setVal(res);
         })
       }
