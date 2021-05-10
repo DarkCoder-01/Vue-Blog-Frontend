@@ -4,7 +4,9 @@ import ElementUI from 'element-ui'
 import router from "@/router";
 
 // 本地开发时用
-// axios.defaults.baseURL = 'http://127.0.0.1:8081/api';
+// axios.defaults.baseURL = 'http://127.0.0.1:8081';
+
+//远程接口用
 axios.defaults.baseURL = 'http://139.196.175.10/api';
 export default function setAxios() {
     //前置拦截，用来添加请求头

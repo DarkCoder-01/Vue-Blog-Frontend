@@ -25,7 +25,9 @@ Vue.prototype.$axios = axios
 Vue.prototype.$store = store
 Vue.config.productionTip = false
 
-new Vue({
+const bus = new Vue({
   router,
   render: h => h(App)
 }).$mount('#app')
+
+Vue.prototype.$bus = bus

@@ -2,8 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store/index.js'
 
-import Layout from "@/components/Layout";
-import Home from "@/views/Home";
+// import Layout from "@/components/Layout";
+import Layout from "@/components/LayoutMain";
+// import Home from "@/views/Home";
+import Home from "@/views/NewHome";
 import Archives from "@/views/Archives";
 import Dynamics from "@/views/Dynamics";
 import About from "@/views/About";

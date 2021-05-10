@@ -16,9 +16,6 @@
           <el-menu-item index="/archives">
             <i class="el-icon-folder-opened"></i>文章归档
           </el-menu-item>
-          <!--        <el-menu-item index="/dynamics">-->
-          <!--          <i class="el-icon-edit-outline"></i>个人动态-->
-          <!--        </el-menu-item>-->
           <el-menu-item index="/leavemsg">
             <i class="el-icon-message"></i>留言
           </el-menu-item>
@@ -33,7 +30,6 @@
                     <span class="el-dropdown-link">
                       <span style="font-size: large">{{ userInfo ? userInfo.username : "" }}</span>
                       <i class="el-icon-arrow-down el-icon--right"></i>
-                      <!--                      <el-avatar size="small" :src="userInfo.avatar" style="margin-left: 10px"></el-avatar>-->
                     </span>
               <el-dropdown-menu class="m-dropdown">
                 <router-link to="/manager"><el-dropdown-item icon="el-icon-s-tools">管理中心</el-dropdown-item></router-link>
@@ -45,7 +41,6 @@
         </el-menu>
       </div>
     </div>
-
     <div id="mobileNav">
       <el-menu
           default-active="2"

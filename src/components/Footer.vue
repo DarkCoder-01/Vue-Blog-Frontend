@@ -3,7 +3,7 @@
     <div class="m-content">
       <p>
         <span>
-          Copyright © www.darkcoder.com All Rights Reserved.
+          Copyright © www.DarkCoder.com All Rights Reserved.
         </span>
       </p>
       <p>
