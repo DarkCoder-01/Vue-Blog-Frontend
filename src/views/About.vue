@@ -2,7 +2,7 @@
   <div>
     <el-card>
       <div class="block">
-        <el-carousel height="500px">
+        <el-carousel>
           <el-carousel-item v-for="img in imgs" :key="img">
             <el-image :src="img" fit="cover"></el-image>
           </el-carousel-item>
@@ -26,7 +26,9 @@ export default {
   data() {
     return {
       about: "",
-      imgs: ["http://139.196.175.10/img/72cfaa308c29450d83087275965f0e5a.jpg"],
+      imgs: [
+        require('@/assets/img/deer.jpg'), require('@/assets/img/tree.jpg'), require('@/assets/img/moon.jpg')
+      ],
     }
   },
   methods: {

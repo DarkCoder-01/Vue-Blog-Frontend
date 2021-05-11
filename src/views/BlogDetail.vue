@@ -7,7 +7,7 @@
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>博客详情</el-breadcrumb-item>
           </el-breadcrumb>
-          <div style="position: absolute; right: 0; top: 0">
+          <div style="position: absolute; right: 0; top: 0" v-if="isLogin">
             <el-button type="primary" icon="el-icon-edit" @click="editBlog(id)" circle style="margin-left: 20px"></el-button>
             <el-button type="danger" icon="el-icon-delete" @click="deleteBlog(id)" circle style="margin-left: 20px"></el-button>
           </div>
