@@ -2,21 +2,16 @@
   <div>
     <el-card>
       <div slot="header">
-        <el-row>
-          <el-col :span="4">
-            <div style="padding: 15px">
-              <el-breadcrumb separator-class="el-icon-arrow-right">
-                <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-                <el-breadcrumb-item>博客详情</el-breadcrumb-item>
-              </el-breadcrumb>
-            </div>
-          </el-col>
-          <el-col v-if="isLogin" :span="20" :push="17">
-            <el-button type="primary" icon="el-icon-edit" @click="editBlog(id)" circle></el-button>
-            <el-button type="danger" icon="el-icon-delete" @click="deleteBlog(id)" circle></el-button>
-          </el-col>
-        </el-row>
-
+        <div style="display: flex; position: relative; padding: 10px">
+          <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>博客详情</el-breadcrumb-item>
+          </el-breadcrumb>
+          <div style="position: absolute; right: 0; top: 0">
+            <el-button type="primary" icon="el-icon-edit" @click="editBlog(id)" circle style="margin-left: 20px"></el-button>
+            <el-button type="danger" icon="el-icon-delete" @click="deleteBlog(id)" circle style="margin-left: 20px"></el-button>
+          </div>
+        </div>
       </div>
       <div>
         <h2>{{ data.title }}</h2>
